@@ -1,0 +1,8 @@
+.idea
+*.iml
+project/target
+target
+spark-warehouse
+tmp
+.bsp
+.DS_Store

@@ -1,0 +1,21 @@
+name: Publish Images Using fixed version
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish-notebook:
+    name: Publish Jupyter notebook image
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Log into registry
+        run: echo "${{ secrets.FERLAB_DOCKER_HUB_TOKEN }}" | docker login -u ${{ secrets.FERLAB_DOCKER_HUB_USER }} --password-stdin
+      - name: Build spark-operator:3.0.0
+        run: docker build -t ferlabcrsj/spark-operator:3.0.0 .
+        working-directory: spark300_hadoop320
+      - name: Push spark-operator:3.0.0
+        run: docker push ferlabcrsj/spark-operator:3.0.0 .
+        working-directory: spark300_hadoop320
