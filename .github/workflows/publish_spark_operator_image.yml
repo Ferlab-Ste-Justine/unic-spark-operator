@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish-notebook:
-    name: Publish Jupyter notebook image
+    name: Publish Spark-Operator notebook image
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -19,3 +19,9 @@ jobs:
       - name: Push spark-operator:3.0.0
         run: docker push ferlabcrsj/spark-operator:3.0.0
         working-directory: spark300_hadoop320
+      - name: Build spark-operator:3.1.1
+        run: docker build -t ferlabcrsj/spark-operator:3.1.1 .
+        working-directory: spark311_hadoop320
+      - name: Push spark-operator:3.1.1
+        run: docker push ferlabcrsj/spark-operator:3.1.1
+        working-directory: spark311_hadoop320
