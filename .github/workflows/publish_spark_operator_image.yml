@@ -6,9 +6,6 @@ on:
       - 3.0.0_*
       - 3.1.1_*
 
-env:
-  TAG: ${GITHUB_REF#refs/tags/}  # 3.0.0_1
-
 jobs:
   publish-notebook:
     name: Publish Spark-Operator notebook image
@@ -17,13 +14,13 @@ jobs:
       - uses: actions/checkout@v2
       - name: Get Spark version  # Without dots (3.0.0 -> 300)
         run: |
-          SPARK_VERSION=${TAG%_*}
+          SPARK_VERSION=${GITHUB_REF_NAME%_*}
           echo "SPARK_VERSION=$(echo $SPARK_VERSION | tr -d '.')" >> $GITHUB_ENV
       - name: Log into registry
         run: echo "${{ secrets.FERLAB_DOCKER_HUB_TOKEN }}" | docker login -u ${{ secrets.FERLAB_DOCKER_HUB_USER }} --password-stdin
-      - name: Build spark-operator:${{ env.TAG }}
-        run: docker build -t ferlabcrsj/spark-operator:$TAG .
+      - name: Build spark-operator
+        run: docker build -t ferlabcrsj/spark-operator:$GITHUB_REF_NAME .
         working-directory: spark${{ env.SPARK_VERSION }}_hadoop320
-      - name: Push spark-operator:${{ env.TAG }}
-        run: docker push ferlabcrsj/spark-operator:$TAG
+      - name: Push spark-operator
+        run: docker push ferlabcrsj/spark-operator:$GITHUB_REF_NAME
         working-directory: spark${{ env.SPARK_VERSION }}_hadoop320
