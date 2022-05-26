@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Get Spark version  # Without dots (3.0.0 -> 300)
-      - run: |
+        run: |
           SPARK_VERSION=${TAG%_*}
           echo "SPARK_VERSION=$(echo $SPARK_VERSION | tr -d '.')" >> $GITHUB_ENV
       - name: Log into registry
