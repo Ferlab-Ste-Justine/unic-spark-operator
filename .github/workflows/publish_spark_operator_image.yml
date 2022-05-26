@@ -17,6 +17,11 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+      - name: Test interpolation
+        run: echo "spark${{ env.SPARK_VERSION }}_hadoop320"
+      - name: Test working directory
+        run: echo "Hello world"
+        working-directory: spark${{ env.SPARK_VERSION }}_hadoop320
       - name: Log into registry
         run: echo "${{ secrets.FERLAB_DOCKER_HUB_TOKEN }}" | docker login -u ${{ secrets.FERLAB_DOCKER_HUB_USER }} --password-stdin
       - name: Build spark-operator:${{ env.TAG }}
